@@ -11,14 +11,21 @@ namespace PostalTracking.DAL.Entities
         public virtual DbSet<PackageTracking> PackageTracking { get; set; }
         public virtual DbSet<Status> Status { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Data Source=localhost\SQL2014;Initial Catalog=PostalTracking;Integrated Security=True");
-            }
-        }
+        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //        {
+        //            if (!optionsBuilder.IsConfigured)
+        //            {
+        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+        //                optionsBuilder.UseSqlServer(@"Data Source=localhost\SQL2014;Initial Catalog=PostalTracking;Integrated Security=True");
+        //            }
+        //        }
+
+
+        public PostalTrackingContext()
+            : base() { }
+
+        public PostalTrackingContext(DbContextOptions options)
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
