@@ -9,7 +9,7 @@ using PostalTracking.API.Controllers;
 
 namespace PostalTracking.Tests
 {
-    class Statuses_Should
+    public class Statuses_Should
     {
         DbContextOptions<PostalTrackingContext> _dbContextOptions;
 
@@ -74,6 +74,38 @@ namespace PostalTracking.Tests
                 Status status = okResult.Value as Status;
                 Assert.NotNull(status);
                 Assert.Equal(5, status.Id);
+            }
+        }
+
+        // Testiranje brisanja statusa
+        [Fact]
+        public async void DeleteStatus()
+        {
+            // Dodavanje statusa prije dohvacanja
+            using (var context = new PostalTrackingContext(_dbContextOptions))
+            {
+                var statusesAPI = new StatusController(context);
+                for (int i = 0; i < 3; ++i)
+                {
+                    Status tmpStatus = new Status();
+                    tmpStatus.StatusDescription = $"Status { i + 1 }";
+                    tmpStatus.Active = true;
+                    var result = await statusesAPI.PostStatus(tmpStatus);
+                    var badRequest = result as BadRequestObjectResult;
+
+                    Assert.Null(badRequest);    // Ako API ne vraca BadRequest, to znaci da je poziv uspjesan
+                }
+            }
+
+            using (var context = new PostalTrackingContext(_dbContextOptions))
+            {
+                var statusesAPI = new StatusController(context);
+                var result = await statusesAPI.DeleteStatus(1);
+                var okResult = result as OkObjectResult;
+
+                // Ako je rezultat Ok i status kod je 200, tada je poziv uspjesan
+                Assert.NotNull(okResult);
+                Assert.Equal(200, okResult.StatusCode);
             }
         }
     }
