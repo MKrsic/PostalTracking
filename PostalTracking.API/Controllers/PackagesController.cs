@@ -10,72 +10,72 @@ using PostalTracking.DAL.Entities;
 namespace PostalTracking.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Customers")]
-    public class CustomersController : Controller
+    [Route("api/Packages")]
+    public class PackagesController : Controller
     {
         private readonly PostalTrackingContext _context;
 
-        public CustomersController(PostalTrackingContext context)
+        public PackagesController(PostalTrackingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Customers
+        // GET: api/Packages
         /// <summary>
-        /// Gets a list of all customers
+        /// Gets a list of all packages
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<Customer> GetCustomer()
+        public IEnumerable<Package> GetPackage()
         {
-            return _context.Customer;
+            return _context.Package;
         }
 
-        // GET: api/Customers/5
+        // GET: api/Packages/5
         /// <summary>
-        /// Gets a customer with enetered ID if exists
+        /// Gets a package with enetered ID if exists
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCustomer([FromRoute] int id)
+        public async Task<IActionResult> GetPackage([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var customer = await _context.Customer.SingleOrDefaultAsync(m => m.Id == id);
+            var package = await _context.Package.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (customer == null)
+            if (package == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(package);
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/Packages/5
         /// <summary>
-        /// Updates existing customer
+        /// Updates existing package
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="customer"></param>
+        /// <param name="package"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer([FromRoute] int id, [FromBody] Customer customer)
+        public async Task<IActionResult> PutPackage([FromRoute] int id, [FromBody] Package package)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.Id)
+            if (id != package.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            _context.Entry(package).State = EntityState.Modified;
 
             try
             {
@@ -83,7 +83,7 @@ namespace PostalTracking.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!PackageExists(id))
                 {
                     return NotFound();
                 }
@@ -96,55 +96,55 @@ namespace PostalTracking.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Customers
+        // POST: api/Packages
         /// <summary>
-        /// Inserts new customer
+        /// Inserts new package
         /// </summary>
-        /// <param name="customer"></param>
+        /// <param name="package"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> PostCustomer([FromBody] Customer customer)
+        public async Task<IActionResult> PostPackage([FromBody] Package package)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Customer.Add(customer);
+            _context.Package.Add(package);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+            return CreatedAtAction("GetPackage", new { id = package.Id }, package);
         }
 
-        // DELETE: api/Customers/5
+        // DELETE: api/Packages/5
         /// <summary>
-        /// Deletes customer with entered ID if exists
+        /// Deletes package with entered ID if exists
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
+        public async Task<IActionResult> DeletePackage([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var customer = await _context.Customer.SingleOrDefaultAsync(m => m.Id == id);
-            if (customer == null)
+            var package = await _context.Package.SingleOrDefaultAsync(m => m.Id == id);
+            if (package == null)
             {
                 return NotFound();
             }
 
-            _context.Customer.Remove(customer);
+            _context.Package.Remove(package);
             await _context.SaveChangesAsync();
 
-            return Ok(customer);
+            return Ok(package);
         }
 
-        private bool CustomerExists(int id)
+        private bool PackageExists(int id)
         {
-            return _context.Customer.Any(e => e.Id == id);
+            return _context.Package.Any(e => e.Id == id);
         }
     }
 }

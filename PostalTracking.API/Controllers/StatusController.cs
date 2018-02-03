@@ -10,72 +10,72 @@ using PostalTracking.DAL.Entities;
 namespace PostalTracking.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Customers")]
-    public class CustomersController : Controller
+    [Route("api/Status")]
+    public class StatusController : Controller
     {
         private readonly PostalTrackingContext _context;
 
-        public CustomersController(PostalTrackingContext context)
+        public StatusController(PostalTrackingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Customers
+        // GET: api/Status
         /// <summary>
-        /// Gets a list of all customers
+        /// Gets a list of all statuses
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<Customer> GetCustomer()
+        public IEnumerable<Status> GetStatus()
         {
-            return _context.Customer;
+            return _context.Status;
         }
 
-        // GET: api/Customers/5
+        // GET: api/Status/5
         /// <summary>
-        /// Gets a customer with enetered ID if exists
+        /// Gets a status with enetered ID if exists
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCustomer([FromRoute] int id)
+        public async Task<IActionResult> GetStatus([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var customer = await _context.Customer.SingleOrDefaultAsync(m => m.Id == id);
+            var status = await _context.Status.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (customer == null)
+            if (status == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(status);
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/Status/5
         /// <summary>
-        /// Updates existing customer
+        /// Updates existing status
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="customer"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer([FromRoute] int id, [FromBody] Customer customer)
+        public async Task<IActionResult> PutStatus([FromRoute] int id, [FromBody] Status status)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.Id)
+            if (id != status.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            _context.Entry(status).State = EntityState.Modified;
 
             try
             {
@@ -83,7 +83,7 @@ namespace PostalTracking.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!StatusExists(id))
                 {
                     return NotFound();
                 }
@@ -96,55 +96,55 @@ namespace PostalTracking.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Customers
+        // POST: api/Status
         /// <summary>
-        /// Inserts new customer
+        /// Inserts new status
         /// </summary>
-        /// <param name="customer"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> PostCustomer([FromBody] Customer customer)
+        public async Task<IActionResult> PostStatus([FromBody] Status status)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Customer.Add(customer);
+            _context.Status.Add(status);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+            return CreatedAtAction("GetStatus", new { id = status.Id }, status);
         }
 
-        // DELETE: api/Customers/5
+        // DELETE: api/Status/5
         /// <summary>
-        /// Deletes customer with entered ID if exists
+        /// Deletes status with entered ID if exists
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
+        public async Task<IActionResult> DeleteStatus([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var customer = await _context.Customer.SingleOrDefaultAsync(m => m.Id == id);
-            if (customer == null)
+            var status = await _context.Status.SingleOrDefaultAsync(m => m.Id == id);
+            if (status == null)
             {
                 return NotFound();
             }
 
-            _context.Customer.Remove(customer);
+            _context.Status.Remove(status);
             await _context.SaveChangesAsync();
 
-            return Ok(customer);
+            return Ok(status);
         }
 
-        private bool CustomerExists(int id)
+        private bool StatusExists(int id)
         {
-            return _context.Customer.Any(e => e.Id == id);
+            return _context.Status.Any(e => e.Id == id);
         }
     }
 }
