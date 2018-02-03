@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using PostalTracking.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace PostalTracking.API
 {
@@ -33,6 +34,7 @@ namespace PostalTracking.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.IncludeXmlComments(GetXmlCommentsPath());
             });
         }
 
@@ -62,6 +64,12 @@ namespace PostalTracking.API
                           name: "default",
                           template: "{controller=Todo}/{action=Index}/{id?}");
             });
+        }
+
+        private string GetXmlCommentsPath()
+        {
+            var app = PlatformServices.Default.Application;
+            return System.IO.Path.Combine(app.ApplicationBasePath, "PostalTracking.API.xml");
         }
     }
 }
