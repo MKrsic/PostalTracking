@@ -93,7 +93,7 @@ namespace PostalTracking.API.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(customer);
         }
 
         // POST: api/Customers
