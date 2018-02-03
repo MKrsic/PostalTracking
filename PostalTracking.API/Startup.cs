@@ -12,6 +12,8 @@ using PostalTracking.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.Extensions.PlatformAbstractions;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PostalTracking.API
 {
@@ -30,10 +32,29 @@ namespace PostalTracking.API
             services.AddMvc();
             services.AddDbContext<PostalTrackingContext>(options => options.UseSqlServer(Configuration["dbConnString"]));
 
+            // Dodavanje swaggera za servis
+            //services.AddSwaggerGen(options =>
+            //{
+            //    options.SwaggerDoc("v1.0", new Info { Title = "Postal API", Version = "v1.0" });   // Dodavanje swagger dokumenta za verziju 1.0
+            //    options.SwaggerDoc("v1.1", new Info { Title = "Postal API", Version = "v1.1" });   // Dodavanje swagger dokumenta za verziju 1.1
+
+            //    // Ovime se implementira logika za odlucivanje u koji dokument ce ici koja verzija servisa
+            //    options.DocInclusionPredicate((docName, apiDesc) =>
+            //    {
+            //        var versions = apiDesc.ControllerAttributes()
+            //                            .OfType<ApiVersionAttribute>()
+            //                            .SelectMany(attr => attr.Versions);
+
+            //        return versions.Any(v => $"v{v.ToString()}" == docName);
+            //    });
+
+            //    options.IncludeXmlComments(GetXmlCommentsPath());
+            //});
+
             // Register the Swagger generator, defining one or more Swagger documents  
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "Postal API", Version = "v1" });
                 c.IncludeXmlComments(GetXmlCommentsPath());
             });
         }
